@@ -1,0 +1,3 @@
+﻿.env*
+.DS_Store*
+.git/

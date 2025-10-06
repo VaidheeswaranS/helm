@@ -1,0 +1,4 @@
+﻿# .prettierignore
+nginx/
+into-go-template/
+templates/

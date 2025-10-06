@@ -1,0 +1,29 @@
+﻿# I am YAML comment. I will remain in the final generated YAML
+{{- /* I am a GO comment and I will not remain in the final generated YAML */}}
+test: {{ .Values.test }}
+
+{{- /* Lower function */}}
+test: {{ lower .Values.test }}
+
+{{- /* Replace function */}}
+test: {{ replace " " "-" .Values.test }}
+
+{{- /* Pipe symbol to pass arguments to another function */}}
+test: {{ replace " " "-" .Values.test | lower}}
+
+labels:
+  {{- /* The app label is coming from Release */}}
+  app: {{ .Release.Name}}
+  {{- /* The chart label is coming from Chart */}}
+  chart: {{.Chart.Name}}
+
+  {{- /* if else condition examples */}}
+  {{- if eq .Values.environment "production" }}
+  environment: production
+  build: stable
+  public-ingress: true
+  {{- else }}
+  environment: dev
+  build: alpha
+  public-ingress: false
+  {{- end }}
