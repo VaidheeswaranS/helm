@@ -1,0 +1,7 @@
+﻿{{- if and .Values.securityContext .Values.securityContext.enabled }}
+{{- $_ := required "\n securityContext.runAsUser is required when setting securityContext and enabled as true in values.yaml file" .Values.securityContext.runAsUser }}
+{{- $_ := required "\n securityContext.fsGroup is required when setting securityContext and enabled as true in values.yaml file" .Values.securityContext.fsGroup }}
+{{- if int .Values.securityContext.runAsUser | eq 0 }}
+{{- fail "\n The containers cannot be run as root users. \n Please provide the uid greater than 0"}}
+{{- end }}
+{{- end }}

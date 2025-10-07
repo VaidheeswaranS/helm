@@ -1,0 +1,11 @@
+﻿{{/* List function example */}}
+list: 
+{{ list 1 2 3 | toYaml }}
+
+list1: {{ list 1 2 3 | toYaml | nindent 2 }}
+
+list2:
+  values:
+    example: {{ list 1 2 3 | toYaml | nindent 6 }} # we can also use nindent 4 (this will place 1,2,3 in line with "example")
+
+dict: {{ dict "simple" "mystring" "complex" (dict "key1" "value1") | toYaml | nindent 2 }}

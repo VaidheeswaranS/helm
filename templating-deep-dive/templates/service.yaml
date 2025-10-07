@@ -1,0 +1,15 @@
+﻿{{- range $key, $svc := (.Values.services | default dict ) }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "templating-deep-dive.fullName" $ }}-svc-{{ $key }}
+  labels: {{ include "templating-deep-dive.selectorLables" $ | nindent 4 }}
+spec:
+  type: {{ $svc.type }}
+  ports:
+    - port: {{ $svc.port }}
+      targetPort: {{ $.Values.containerPorts.http }}
+      protocol: {{ $svc.protocol }}
+  selector: {{ include "templating-deep-dive.selectorLables" $ | nindent 4 }}
+{{- end }}

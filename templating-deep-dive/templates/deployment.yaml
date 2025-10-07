@@ -1,0 +1,29 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "templating-deep-dive.fullName" . }}
+  labels: {{ include "templating-deep-dive.selectorLables" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{ include "templating-deep-dive.selectorLables" . | nindent 6 }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels: {{ include "templating-deep-dive.selectorLables" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          {{- /* here we are setting the context to securityContext, so only values inside securityContext will be available to use and if it is not present we are setting it to a default dictionary */}}
+          {{- with .Values.securityContext | default dict }}
+          {{- /* here we are checking if the enabled key is present in the dictionary **AND** if it is true */}}
+          {{- if and (hasKey . "enabled") .enabled }}
+          securityContext:
+            runAsUser: {{ .runAsUser }}
+            fsGroup: {{ .fsGroup }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.services | default dict | len }}
+          ports:
+            - containerPort: {{ .Values.containerPorts.http }}
+          {{- end }}

@@ -1,0 +1,46 @@
+﻿## @param default name for Kubernetes objects in the chart
+##         Default to {{ .Release.Name }}-{{ .Chart.Name }}
+customName: "custom-name"
+
+## @param Number for Nginx replicas to deploy
+replicaCount: 3
+
+## @param image name and image tag to deploy
+##
+## @param image.name Nginx image name to use
+## @param image.tag Nginx image tag to use
+image:
+  name: nginx
+  tag: "1.28.0"
+
+## @param Security context details to deploy
+##
+## @param securityContext.enabled to enable securityContext
+## @param securityContext.runAsUser to the runAsUser
+## @param securityContext.fsGroup to set fsGroup
+securityContext:
+  enabled: false
+  runAsUser: 1000
+  fsGroup: 2000
+
+## NGINX container ports
+##
+## @param containerPorts.http
+containerPorts:
+  http: 80
+
+## @param services type and port to deploy
+## services is a map with the following schema
+##
+## @param service["*"].type The type of service in front of the Nginx pods
+## @param service["*"].port The port where the service is receiving requests
+## @param service["*"].protocol The protocol of the service
+services:
+  svc1:
+    type: ClusterIP
+    port: "80"
+    protocol: TCP
+  svc2:
+    type: NodePort
+    port: "30080"
+    protocol: TCP
