@@ -1,0 +1,18 @@
+﻿kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "accessing-files.fullname" . }}
+  namespace: default
+data:
+{{- /*
+This is the option 1 to load data to configMap from multiple file contents
+*/}}
+  {{- range $path, $_ := .Files.Glob "files/*.properties" }}
+  {{ base $path }}: |-
+  {{- $.Files.Get $path | nindent 4 }}
+  {{- end }}
+{{- /*
+This is option 2 to load data to configMap from multiple file contents
+*/}}
+  {{- (.Files.Glob "files/*.properties").AsConfig | nindent 2 }}
+  
