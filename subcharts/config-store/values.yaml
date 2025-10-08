@@ -122,6 +122,15 @@ tolerations: []
 
 affinity: {}
 
-# this value is available to the subchart named "demo-subchart" - passing the values from parent subchart to dependency chart
-demo-subchart:
-  customValue: 'Hello from config-store'
+postgresql:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/postgresql
+  auth:
+    username: config_store_user
+    database: config_store_db
+    existingSecret: postgres-cred
+    secretKeys:
+      userPassword: password
+  fullnameOverride: postgresql-db
